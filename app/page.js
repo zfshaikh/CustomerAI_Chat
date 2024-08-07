@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 
 export default function Home() {
@@ -10,112 +11,133 @@ export default function Home() {
 			content: "Hi! I'm the Headstarter support assistant. How can I help you today?",
 		},
 	]);
+
 	const [message, setMessage] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
 
 	const sendMessage = async () => {
-		if (!message.trim() || isLoading) return;
-		setIsLoading(true);
-
 		setMessage('');
-		setMessages((messages) => [...messages, { role: 'user', content: message }, { role: 'assistant', content: '' }]);
+		setMessages((messages) => [
+			...messages, 
+			{ role: 'user', content: message }, 
+			{ role: 'assistant', content: '' }
+		]);
 
-		try {
-			const response = await fetch('/api/chat', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
+		
+		const response = fetch('/api/chat', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
 				},
 				body: JSON.stringify([...messages, { role: 'user', content: message }]),
-			});
+			}).then(async (res) => {
+				const reader = res.body.getReader();
+				const decoder = new TextDecoder();
 
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
+				let result = ''
+				return reader.read().then(function processText({done, value}){
+					if (done){
+						return result
+					}					
+					const text = decoder.decode(value || new Int8Array(), { stream: true });
+					setMessages((messages) => {
+						let lastMessage = messages[messages.length - 1];
+						let otherMessages = messages.slice(0, messages.length - 1);
+						return [
+							...otherMessages, 
+							{ 
+								...lastMessage, 
+								content: lastMessage.content + text, 
+							},
+						];
+					});
+					return reader.read().then(processText);
+				})
+			})
+		};
 
-			const reader = response.body.getReader();
-			const decoder = new TextDecoder();
-
-			while (true) {
-				const { done, value } = await reader.read();
-				if (done) break;
-				const text = decoder.decode(value, { stream: true });
-				setMessages((messages) => {
-					let lastMessage = messages[messages.length - 1];
-					let otherMessages = messages.slice(0, messages.length - 1);
-					return [...otherMessages, { ...lastMessage, content: lastMessage.content + text }];
-				});
-			}
-		} catch (error) {
-			console.error('Error:', error);
-			setMessages((messages) => [
-				...messages,
-				{ role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
-			]);
-		}
-
-		setIsLoading(false);
-	};
-
-	const handleKeyPress = (event) => {
-		if (event.key === 'Enter' && !event.shiftKey) {
-			event.preventDefault();
-			sendMessage();
-		}
-	};
-
-	return (
-		<Box
-			style={{ backgroundColor: 'lightblue' }}
-			width='100vw'
-			height='100vh'
-			display='flex'
-			flexDirection='column'
-			justifyContent='center'
-			alignItems='center'
-		>
-			<Stack display='flex' p={3}>
-				<Typography fontWeight='bold' variant='h4'>
-					Welcome to Customer AI Chat
-				</Typography>
-			</Stack>
-			<Stack
-				style={{ backgroundColor: 'white' }}
-				direction={'column'}
-				width='600px'
-				height='700px'
-				border='1px solid black'
-				p={2}
-				spacing={3}
+		return (
+			<Box
+				sx={{
+					backgroundColor: 'lightblue',
+					width: '100vw',
+					height: '100vh',
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					alignItems: 'center',
+					p: 2,
+				}}
 			>
-				<Stack direction={'column'} spacing={2} flexGrow={1} overflow='auto' maxHeight='100%'>
-					{messages.map((message, index) => (
-						<Box key={index} display='flex' justifyContent={message.role === 'assistant' ? 'flex-start' : 'flex-end'}>
+				<Stack
+					sx={{
+						backgroundColor: 'white',
+						width: { xs: '100%', sm: '600px' },
+						height: '650px',
+						borderRadius: '16px',
+						boxShadow: 3,
+						p: 3,
+					}}
+				>
+					<Typography
+						sx={{
+							fontWeight: 'bold',
+							variant: 'h4',
+							mb: 2,
+							textAlign: 'center',
+							color: '#002884',
+						}}
+					>
+						Welcome to Customer AI Chat
+					</Typography>
+
+					<Stack
+						sx={{
+							flexDirection: 'column',
+							flexGrow: 1,
+							overflowY: 'auto',
+							maxHeight: '100%',
+							p: 1,
+						}}
+					>
+						{messages.map((message, index) => (
 							<Box
-								bgcolor={message.role === 'assistant' ? 'primary.main' : 'secondary.main'}
-								color='white'
-								borderRadius={16}
-								p={3}
+								key={index}
+								sx={{
+									display: 'flex',
+									justifyContent: message.role === 'assistant' ? 'flex-start' : 'flex-end',
+									mb: 2,
+								}}
 							>
-								{message.content}
+								<Box
+									sx={{
+										bgcolor: message.role === 'assistant' ? '#2196f3' : '#ab47bc',
+										color: 'white',
+										borderRadius: '16px',
+										p: 2,
+										maxWidth: '75%',
+										boxShadow: 2,
+									}}
+								>
+									{message.content}
+								</Box>
 							</Box>
-						</Box>
-					))}
+						))}
+					</Stack>
+					<Stack direction='row' spacing={2} mt={2}>
+						<TextField
+							label='Enter Message'
+							fullWidth
+							value={message}
+							onChange={(e) => setMessage(e.target.value)}
+							variant='outlined'
+						/>
+						
+						<Button variant="contained" endIcon={<SendIcon />} onClick={sendMessage}>
+  							Send
+						</Button>
+					</Stack>
 				</Stack>
-				<Stack direction={'row'} spacing={2}>
-					<TextField
-						label='Enter Message'
-						fullWidth
-						value={message}
-						onChange={(e) => setMessage(e.target.value)}
-						onKeyPress={handleKeyPress}
-						disabled={isLoading}
-					/>
-					<Button variant='contained' onClick={sendMessage} disabled={isLoading}>
-						{isLoading ? 'Sending...' : 'Send'}
-					</Button>
-				</Stack>
-			</Stack>
-		</Box>
-	);
-}
+			</Box>
+		);
+	};
+

@@ -4,8 +4,7 @@ import OpenAI from 'openai'; // Import OpenAI library for interacting with the O
 // System prompt for the AI, providing guidelines on how to respond to users
 
 // Use your own system prompt here
-const systemPrompt = `
-Welcome to HeadStarter's Customer Support! As your virtual assistant, I am here to help you navigate and make the most of your interview practice experience. Please feel free to ask me any questions you have about our services, features, and how to best prepare for your technical interviews. Here are some ways I can assist you:
+const systemPrompt = `Welcome to HeadStarter's Customer Support! As your virtual assistant, I am here to help you navigate and make the most of your interview practice experience. Please feel free to ask me any questions you have about our services, features, and how to best prepare for your technical interviews. Here are some ways I can assist you:
 
 Account Assistance: Help with creating, managing, and troubleshooting your HeadStarter account.
 Interview Practice: Guidance on how to start an interview session, tips for effective practice, and how to review your performance.
@@ -22,8 +21,8 @@ export async function POST(req) {
 
 	// Create a chat completion request to the OpenAI API
 	const completion = await openai.chat.completions.create({
-		messages: [{ role: 'system', content: systemPrompt }, ...data], // Include the system prompt and user messages
-		model: 'gpt-3.5-turbo', // Specify the model to use
+		messages: [{ role: 'system', content: systemPrompt }, ...data,], // Include the system prompt and user messages
+		model: 'gpt-4o-mini', // Specify the model to use
 		stream: true, // Enable streaming responses
 	});
 
