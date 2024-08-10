@@ -4,11 +4,12 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 
+
 export default function Home() {
 	const [messages, setMessages] = useState([
 		{
 			role: 'assistant',
-			content: "Hi! I'm the Headstarter support assistant. How can I help you today?",
+			content: "Hi! I'm your LingoMate AI. How can I help you today?",
 		},
 	]);
 
@@ -23,7 +24,7 @@ export default function Home() {
 		]);
 
 		
-		const response = fetch('/api/chat', {
+		const response =  fetch('/api/chat', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -54,11 +55,16 @@ export default function Home() {
 				})
 			})
 		};
+		
 
 		return (
 			<Box
 				sx={{
 					backgroundColor: 'lightblue',
+					backgroundImage: 'url(/robot.png)',
+					backgroundSize: 'cover',
+					backgroundRepeat: 'no-repeat',
+					backgroundPosition: 'center',
 					width: '100vw',
 					height: '100vh',
 					display: 'flex',
@@ -70,24 +76,25 @@ export default function Home() {
 			>
 				<Stack
 					sx={{
-						backgroundColor: 'white',
-						width: { xs: '100%', sm: '600px' },
+						backgroundColor: 'rgba(255, 255, 255, 0.5)',
+						width: { xs: '100%', sm: '550px' },
 						height: '650px',
-						borderRadius: '16px',
-						boxShadow: 3,
+						borderRadius: '20px',
+						boxShadow: 8,
 						p: 3,
 					}}
 				>
 					<Typography
 						sx={{
 							fontWeight: 'bold',
+							fontSize: '20px',
 							variant: 'h4',
 							mb: 2,
 							textAlign: 'center',
 							color: '#002884',
 						}}
 					>
-						Welcome to Customer AI Chat
+						Welcome to LingoMate AI 
 					</Typography>
 
 					<Stack
@@ -110,15 +117,22 @@ export default function Home() {
 							>
 								<Box
 									sx={{
-										bgcolor: message.role === 'assistant' ? '#2196f3' : '#ab47bc',
-										color: 'white',
+										bgcolor: message.role === 'assistant' ? '#90caf9' : '#e1bee7',
+										color: 'black',
 										borderRadius: '16px',
 										p: 2,
 										maxWidth: '75%',
-										boxShadow: 2,
+										boxShadow: 3,
 									}}
 								>
-									{message.content}
+									{message.content.split('\n').map((line, i) => (
+                                    	<Typography key={i} component="span">
+                                        	{line}
+                                        	<br />
+                                    	</Typography>
+                                	))}
+									{/* {message.content} */}
+									
 								</Box>
 							</Box>
 						))}
@@ -140,4 +154,3 @@ export default function Home() {
 			</Box>
 		);
 	};
-

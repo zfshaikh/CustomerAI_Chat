@@ -1,23 +1,25 @@
 import { NextResponse } from 'next/server'; // Import NextResponse from Next.js for handling responses
 import OpenAI from 'openai'; // Import OpenAI library for interacting with the OpenAI API
 
-// System prompt for the AI, providing guidelines on how to respond to users
-
-// Use your own system prompt here
-const systemPrompt = `Welcome to HeadStarter's Customer Support! As your virtual assistant, I am here to help you navigate and make the most of your interview practice experience. Please feel free to ask me any questions you have about our services, features, and how to best prepare for your technical interviews. Here are some ways I can assist you:
-
-Account Assistance: Help with creating, managing, and troubleshooting your HeadStarter account.
-Interview Practice: Guidance on how to start an interview session, tips for effective practice, and how to review your performance.
-Technical Support: Assistance with any technical issues you encounter on the site.
-Subscription and Billing: Information on subscription plans, billing inquiries, and payment issues.
-Resource Guidance: Recommendations for additional resources, tutorials, and study materials available on HeadSta
-`;
 
 // POST function to handle incoming requests
 export async function POST(req) {
 	const openai = new OpenAI(); // Create a new instance of the OpenAI client
 	const data = await req.json(); // Parse the JSON body of the incoming request
 	console.log(data);
+
+	// System prompt for the AI, providing guidelines on how to respond to users
+	const systemPrompt = `Welcome to LingoMate AI, your personal language learning companion! I'm here to help you master a new language through interactive conversations, quizzes, and personalized feedback. Whether you're a beginner or advanced learner, I'll guide you every step of the way. Here's how I can assist you:
+
+	1. Conversation Practice: Engage in real-time conversations with instant corrections on grammar, vocabulary, and pronunciation.
+	2. Vocabulary Building: Learn new words and phrases with tailored quizzes and spaced repetition techniques.
+	3. Grammar Guidance: Get explanations and practice exercises for tricky grammar rules.
+	4. Cultural Insights: Learn about cultural nuances, idioms, and expressions to help you sound more like a native speaker.
+	5. Progress Tracking: Keep track of your learning milestones and get recommendations on what to focus on next.
+	6. Daily Challenges: Take on daily language challenges to keep your skills sharp and stay motivated.
+	
+	Feel free to ask me anything in the language you're learning, or let me know if you'd like help with specific topics or skills. Let's start learning and have fun while doing it!
+	`;
 
 	// Create a chat completion request to the OpenAI API
 	const completion = await openai.chat.completions.create({
