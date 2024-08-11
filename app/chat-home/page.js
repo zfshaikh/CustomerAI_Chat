@@ -178,6 +178,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { marked } from "marked"; // Import marked for Markdown parsing
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
+import { Black_And_White_Picture } from "next/font/google";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -291,7 +292,7 @@ export default function Home() {
         <Typography
           sx={{
             fontWeight: "bold",
-            fontSize: "20px",
+            fontSize: "22px",
             textAlign: "center",
             color: "#002884",
           }}
@@ -305,9 +306,9 @@ export default function Home() {
   const teamMembers = [
     // Example team members; uncomment and populate with real data if needed
     { name: "Zahra Shaikh", role: "Developer", image: "/teamImages/Zahra.png" },
-    // { name: "Jane Smith", role: "Developer", image: "/jane.png" },
-    // { name: "Alice Johnson", role: "Developer", image: "/alice.png" },
-    // { name: "Bob Brown", role: "Developer", image: "/bob.png" },
+    { name: "Koe Myint", role: "Developer", image: "/teamImages/Koe.png" },
+    { name: "Chialin Hsiao", role: "Developer", image: "/alice.png" },
+    { name: "Harsita Keerthikanth", role: "Developer", image: "/bob.png" },
   ];
 
   return (
@@ -327,16 +328,16 @@ export default function Home() {
       }}
     >
       {/* Tabs placed outside the chatbot container */}
-      <Tabs value={selectedTab} onChange={handleTabChange} sx={{ mb: 2 }}>
-        <Tab label="Home" />
-        <Tab label="Our Team" />
+      <Tabs value={selectedTab} onChange={handleTabChange} sx={{ mb: 3 }}>
+        <Tab label="Home" sx={{ fontSize: '15px', fontWeight: 'bold' }} />
+        <Tab label="Our Team" sx={{ fontSize: '15px', fontWeight: 'bold' }} />
       </Tabs>
 
       <Stack
         sx={{
           backgroundColor: "rgba(255, 255, 255, 0.5)",
-          width: { xs: "100%", sm: "550px" },
-          height: "650px",
+          width: { xs: "100%", sm: "520px" },
+          height: "620px",
           borderRadius: "20px",
           boxShadow: 8,
           p: 3,
@@ -349,7 +350,7 @@ export default function Home() {
             <Typography
               sx={{
                 fontWeight: "bold",
-                fontSize: "20px",
+                fontSize: "22px",
                 mb: 2,
                 textAlign: "center",
                 color: "#002884",
@@ -419,11 +420,11 @@ export default function Home() {
 
         {selectedTab === 1 && (
           // Content for Our Team tab
-          <Stack sx={{ mt: 2 }} spacing={2}>
+          <Stack sx={{ mt: 0 }} spacing={2}>
             <Typography
               sx={{
                 fontWeight: "bold",
-                fontSize: "20px",
+                fontSize: "22px",
                 mb: 2,
                 textAlign: "center",
                 color: "#002884",
@@ -438,10 +439,10 @@ export default function Home() {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
-                  bgcolor: "rgba(255, 255, 255, 0.8)",
+                  bgcolor: "rgba(255, 255, 255, 0.5)",
                   borderRadius: "10px",
                   p: 2,
-                  boxShadow: 2,
+                  boxShadow: 3,
                 }}
               >
                 <img
@@ -455,7 +456,7 @@ export default function Home() {
                   }}
                 />
                 <Box>
-                  <Typography sx={{ fontWeight: "bold", color: "#002884" }}>
+                  <Typography sx={{ fontWeight: "bold", color: "#002884"}}>
                     {member.name}
                   </Typography>
                   <Typography>{member.role}</Typography>
@@ -465,7 +466,7 @@ export default function Home() {
           </Stack>
         )}
 
-        <Dialog open={confirmLogout} onClose={() => setConfirmLogout(false)}>
+        {/* <Dialog open={confirmLogout} onClose={() => setConfirmLogout(false)}>
           <DialogTitle>Confirm Logout</DialogTitle>
           <DialogContent>
             <Typography>Are you sure you want to log out?</Typography>
@@ -478,18 +479,74 @@ export default function Home() {
               Logout
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
+        <Dialog
+          open={confirmLogout} onClose={() => setConfirmLogout(false)}
+          sx={{ '& .MuiDialog-paper': { borderRadius: '15px', padding: '20px' } }} // Adds padding and rounded corners to the dialog box
+        >
+
+        <DialogTitle
+          sx={{
+            backgroundColor: '#002884', // Dark blue background
+            borderRadius: '15px',
+            color: 'white', // White text color
+            textAlign: 'center', // Center-align the title
+            fontWeight: 'bold', // Bold text
+            padding: '10px 0', // Padding for better spacing
+          }}
+        >
+          Confirm Logout
+        </DialogTitle>
+
+        <DialogContent sx={{ padding: '20px', textAlign: 'center' }}>
+          <Typography sx={{ fontSize: '18px', color: '#555', mt: 2 }}>
+            Are you sure you want to log out?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', padding: '10px' }}>
+          <Button
+            variant="outlined"
+            onClick={handleCancelLogout}
+            sx={{
+              borderColor: '#002884', // Border color for the button
+              color: '#002884', // Text color
+              '&:hover': {
+                backgroundColor: '#f0f0f0', // Light gray hover background
+              },
+              marginRight: '10px', // Spacing between buttons
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleLogout}
+            sx={{
+              backgroundColor: '#d32f2f', // Red color for the logout button
+              color: 'white', // White text color
+              '&:hover': {
+                backgroundColor: '#b71c1c', // Darker red on hover
+              },
+            }}
+          >
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       </Stack>
       <Button
-        variant="outlined"
+        variant="contained"
         color="error"
         onClick={() => setConfirmLogout(true)}
         sx={{
-          mt: 2,
-          backgroundColor: "#3399ff",
-          color: "#fff",
+          mt: 3,
+          width: '9%', 
+          height: '45px',
+          fontSize: '15px',
+          backgroundColor: "#002884",
           "&:hover": {
-            backgroundColor: "#0066ff",
+            backgroundColor: 'rgba(0, 40, 132, 0.8)',
           },
         }}
       >

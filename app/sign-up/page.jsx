@@ -68,16 +68,17 @@ export default function AuthPage() {
         p: 2,
       }}
     >
-      <Tabs value={selectedTab} onChange={handleTabChange} sx={{ mb: 2 }}>
-        <Tab label="Login" />
-        <Tab label="Sign Up" />
+      <Tabs value={selectedTab} onChange={handleTabChange} >
+        <Tab label="Login" sx={{ fontSize: '15px',fontWeight: 'bold' }} />
+        <Tab label="Sign Up" sx={{ fontSize: '15px', fontWeight: 'bold' }} />
       </Tabs>
 
       <Stack
         sx={{
           backgroundColor: "rgba(255, 255, 255, 0.5)",
-          width: { xs: "100%", sm: "550px" },
+          width: { xs: "100%", sm: "450px" },
           borderRadius: "20px",
+          marginTop: 17,
           boxShadow: 8,
           p: 3,
         }}
@@ -94,11 +95,14 @@ export default function AuthPage() {
             component="form"
             spacing={2}
             onSubmit={handleSubmit}
+            sx={{
+              alignItems: 'center', // Centers children horizontally
+            }}
           >
             <Typography
               sx={{
                 fontWeight: "bold",
-                fontSize: "20px",
+                fontSize: "22px",
                 mb: 2,
                 textAlign: "center",
                 color: "#002884",
@@ -106,6 +110,7 @@ export default function AuthPage() {
             >
               Login
             </Typography>
+
             <TextField
               label="Email"
               fullWidth
@@ -124,7 +129,7 @@ export default function AuthPage() {
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, width: '30%', height: '48px'}}
             >
               Login
             </Button>
@@ -137,11 +142,14 @@ export default function AuthPage() {
             component="form"
             spacing={2}
             onSubmit={handleSubmit}
+            sx={{
+              alignItems: 'center', // Centers children horizontally
+            }}
           >
             <Typography
               sx={{
                 fontWeight: "bold",
-                fontSize: "20px",
+                fontSize: "22px",
                 mb: 2,
                 textAlign: "center",
                 color: "#002884",
@@ -175,7 +183,7 @@ export default function AuthPage() {
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, width: '30%', height: '48px'}}
             >
               Sign Up
             </Button>

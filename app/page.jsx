@@ -31,7 +31,7 @@ export default function HomePage() {
         variant="h4"
         sx={{
           fontWeight: 'bold',
-          mb: 2,
+          mb: 8,
           color: '#002884',
           textAlign: 'center',
         }}
@@ -42,10 +42,12 @@ export default function HomePage() {
         variant="contained"
         onClick={handleSignUp}
         sx={{
-          backgroundColor: '#002884',
-          color: '#fff',
+          width: '15%', 
+          height: '50px',
+          fontSize: '15px',
+          backgroundColor: 'primary',
           '&:hover': {
-            backgroundColor: '#001e3c',
+            backgroundColor: '#002884',
           },
         }}
       >
