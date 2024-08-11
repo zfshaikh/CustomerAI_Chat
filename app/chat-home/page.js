@@ -158,13 +158,25 @@
 
 "use client";
 
-import { Box, Button, Stack, TextField, Typography, Tabs, Tab, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  Tabs,
+  Tab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState, useEffect } from "react";
 import { auth } from "../firebase/configFirebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { marked } from 'marked'; // Import marked for Markdown parsing
-import { useRouter } from 'next/navigation';
+import { marked } from "marked"; // Import marked for Markdown parsing
+import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 
 export default function Home() {
@@ -243,15 +255,15 @@ export default function Home() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      router.push('/'); // redirect to start page after logout
+      router.push("/"); // redirect to start page after logout
     } catch (error) {
-      console.error('Logout failed: ', error);
+      console.error("Logout failed: ", error);
     }
   };
 
   const handleCancelLogout = async () => {
     setConfirmLogout(false); // close confirmation dialogue and return to home tab
-  }
+  };
 
   const renderMarkdown = (markdownText) => {
     const html = marked.parse(markdownText);
@@ -292,10 +304,10 @@ export default function Home() {
 
   const teamMembers = [
     // Example team members; uncomment and populate with real data if needed
-    // { name: "John Doe", role: "Developer", image: "/john.png" },
-    // { name: "Jane Smith", role: "Designer", image: "/jane.png" },
-    // { name: "Alice Johnson", role: "Project Manager", image: "/alice.png" },
-    // { name: "Bob Brown", role: "QA Engineer", image: "/bob.png" },
+    { name: "Zahra Shaikh", role: "Developer", image: "/teamImages/Zahra.png" },
+    // { name: "Jane Smith", role: "Developer", image: "/jane.png" },
+    // { name: "Alice Johnson", role: "Developer", image: "/alice.png" },
+    // { name: "Bob Brown", role: "Developer", image: "/bob.png" },
   ];
 
   return (
@@ -373,8 +385,8 @@ export default function Home() {
                       p: 2,
                       maxWidth: "75%",
                       boxShadow: 3,
-                      '& ol, & ul': {
-                        listStylePosition: 'inside',
+                      "& ol, & ul": {
+                        listStylePosition: "inside",
                         margin: 0,
                         padding: 0,
                       },
@@ -452,30 +464,21 @@ export default function Home() {
             ))}
           </Stack>
         )}
-          
-      <Dialog
-        open={confirmLogout}
-        onClose={() => setConfirmLogout(false)}
-      >
-        <DialogTitle>Confirm Logout</DialogTitle>
-        <DialogContent>
-          <Typography>Are you sure you want to log out?</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="outlined"
-            onClick={handleCancelLogout}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+        <Dialog open={confirmLogout} onClose={() => setConfirmLogout(false)}>
+          <DialogTitle>Confirm Logout</DialogTitle>
+          <DialogContent>
+            <Typography>Are you sure you want to log out?</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outlined" onClick={handleCancelLogout}>
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleLogout}>
+              Logout
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Stack>
       <Button
         variant="outlined"
@@ -483,10 +486,10 @@ export default function Home() {
         onClick={() => setConfirmLogout(true)}
         sx={{
           mt: 2,
-          backgroundColor: '#3399ff',
-          color: '#fff',
-          '&:hover': {
-            backgroundColor: '#0066ff',
+          backgroundColor: "#3399ff",
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#0066ff",
           },
         }}
       >
