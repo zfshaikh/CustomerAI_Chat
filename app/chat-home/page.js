@@ -158,12 +158,14 @@
 
 "use client";
 
-import { Box, Button, Stack, TextField, Typography, Tabs, Tab } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography, Tabs, Tab, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState, useEffect } from "react";
 import { auth } from "../firebase/configFirebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { marked } from 'marked'; // Import marked for Markdown parsing
+import { useRouter } from 'next/navigation';
+import { signOut } from "firebase/auth";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -177,6 +179,8 @@ export default function Home() {
 
   const [message, setMessage] = useState("");
   const [selectedTab, setSelectedTab] = useState(0); // State for the selected tab
+  const router = useRouter();
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -190,7 +194,7 @@ export default function Home() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
   const sendMessage = async () => {
     setMessage("");
@@ -235,6 +239,19 @@ export default function Home() {
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push('/'); // redirect to start page after logout
+    } catch (error) {
+      console.error('Logout failed: ', error);
+    }
+  };
+
+  const handleCancelLogout = async () => {
+    setConfirmLogout(false); // close confirmation dialogue and return to home tab
+  }
 
   const renderMarkdown = (markdownText) => {
     const html = marked.parse(markdownText);
@@ -435,7 +452,46 @@ export default function Home() {
             ))}
           </Stack>
         )}
+          
+      <Dialog
+        open={confirmLogout}
+        onClose={() => setConfirmLogout(false)}
+      >
+        <DialogTitle>Confirm Logout</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to log out?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={handleCancelLogout}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
       </Stack>
+      <Button
+        variant="outlined"
+        color="error"
+        onClick={() => setConfirmLogout(true)}
+        sx={{
+          mt: 2,
+          backgroundColor: '#3399ff',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#0066ff',
+          },
+        }}
+      >
+        Logout
+      </Button>
     </Box>
   );
 }

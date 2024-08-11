@@ -49,7 +49,7 @@ export default function HomePage() {
           },
         }}
       >
-        Go to Sign Up
+        Log In or Sign Up
       </Button>
     </Box>
   );
