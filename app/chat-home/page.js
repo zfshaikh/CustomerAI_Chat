@@ -308,7 +308,7 @@ export default function Home() {
     { name: "Zahra Shaikh", role: "Developer", image: "/teamImages/Zahra.png" },
     { name: "Koe Myint", role: "Developer", image: "/teamImages/Koe.png" },
     { name: "Chialin Hsiao", role: "Developer", image: "/alice.png" },
-    { name: "Harsita Keerthikanth", role: "Developer", image: "/bob.png" },
+    { name: "Harsita Keerthikanth", role: "Developer", image: "/teamImages/Harsita.jpeg" },
   ];
 
   return (
