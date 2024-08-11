@@ -226,10 +226,14 @@ export default function Home() {
   };
 
   const teamMembers = [
-    // { name: "John Doe", role: "Developer", image: "/john.png" },
-    // { name: "Jane Smith", role: "Designer", image: "/jane.png" },
-    // { name: "Alice Johnson", role: "Project Manager", image: "/alice.png" },
-    // { name: "Bob Brown", role: "QA Engineer", image: "/bob.png" },
+    {
+      name: "Zahra Shaikh",
+      role: "Developer",
+      image: "/teamImages/Zahra.png",
+    },
+    // { name: "Jane Smith", role: "Developer", image: "/jane.png" },
+    // { name: "Alice Johnson", role: "Developer", image: "/alice.png" },
+    // { name: "Bob Brown", role: "Developer", image: "/bob.png" },
   ];
 
   return (
